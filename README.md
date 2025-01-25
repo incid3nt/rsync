@@ -82,6 +82,32 @@ rsync -avc --exclude='.*' . /tmp/backup
 ```
 -c — включение режима проверки контрольных сумм.
 
+2. Скрипт :
+
+```
+#!/bin/bash
+
+# Определяем переменные для источника и цели
+SOURCE_DIR="/home/oleg"
+DESTINATION_DIR="/tmp/backup"
+
+# Дата и время для именования резервной копии
+TODAY=$(date +"%Y-%m-%d_%H:%M")
+
+# Создаем директорию для текущей резервной копии
+mkdir -p "${DESTINATION_DIR}/${TODAY}"
+
+# Выполняем rsync для создания зеркального бэкапа
+rsync -av --delete --exclude='.*' "${SOURCE_DIR}" "${DESTINATION_DIR}/${TODAY}"
+
+# Проверяем статус выполнения rsync
+if [ $? -eq 0 ]; then
+  echo "Бэкап выполнен успешно, время бэкапа $(date)" >> /var/log/backup.log
+else
+  echo "Бэкап не выпонен $(date)" >> /var/log/backup.log
+fi
+```
+
 
 
 
