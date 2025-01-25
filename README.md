@@ -53,3 +53,99 @@
 - Скрипт должен удалять старые резервные копии (сохранять только последние 5 штук)
 - Напишите скрипт управления резервными копиями, в нем можно выбрать резервную копию и данные восстановятся к состоянию на момент создания данной резервной копии.
 - На проверку направьте скрипт и скриншоты, демонстрирующие его работу в различных сценариях.
+
+1. Задание 1 ответ:
+Бэкап файлов домашней директории в папку /tmp/backup
+```
+rsync -a --progress . /tmp/backup
+```
+посмотрим что получилось, как видим все как нужно:
+```
+oleg@rsync:~$ ls -al /tmp/backup/netology/ && ls -al netology/
+итого 8
+drwxr-xr-x 2 oleg oleg 4096 янв 25 23:23 .
+drwx------ 3 oleg oleg 4096 янв 25 23:22 ..
+-rw-r--r-- 1 oleg oleg    0 янв 25 23:23 test
+итого 8
+drwxr-xr-x 2 oleg oleg 4096 янв 25 23:23 .
+drwx------ 3 oleg oleg 4096 янв 25 23:22 ..
+-rw-r--r-- 1 oleg oleg    0 янв 25 23:23 test
+```
+
+Исключаем из синхронизации все директории, начинающиеся с точки (скрытые)
+```
+rsync -av --exclude='.*' . /tmp/backup
+```
+Необходимо сделать так, чтобы rsync подсчитывал хэш-суммы для всех файлов, даже если их время модификации и размер идентичны в источнике и приемнике.
+```
+rsync -avc --exclude='.*' . /tmp/backup
+```
+-c — включение режима проверки контрольных сумм.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+oleg@rsync:~$ ls -al /tmp/backup
+итого 12
+drwx------ 3 oleg oleg 4096 янв 25 23:34 .
+drwxrwxrwt 9 root root 4096 янв 25 23:33 ..
+drwxr-xr-x 2 oleg oleg 4096 янв 25 23:23 netology
+-rw-r--r-- 1 oleg oleg    0 янв 25 23:34 oleg
+oleg@rsync:~$ ls -al
+итого 12
+drwx------ 3 oleg oleg 4096 янв 25 23:34 .
+drwxr-xr-x 4 root root 4096 янв 25 23:21 ..
+drwxr-xr-x 2 oleg oleg 4096 янв 25 23:23 netology
+-rw-r--r-- 1 oleg oleg    0 янв 25 23:34 oleg
+oleg@rsync:~$ rm -rf oleg
+oleg@rsync:~$ ls
+netology
+oleg@rsync:~$ rsync -avc --exclude='.*' . /tmp/backup
+sending incremental file list
+./
+
+sent 137 bytes  received 20 bytes  314,00 bytes/sec
+total size is 0  speedup is 0,00
+oleg@rsync:~$ ls -al /tmp/backup
+итого 12
+drwx------ 3 oleg oleg 4096 янв 25 23:39 .
+drwxrwxrwt 9 root root 4096 янв 25 23:33 ..
+drwxr-xr-x 2 oleg oleg 4096 янв 25 23:23 netology
+-rw-r--r-- 1 oleg oleg    0 янв 25 23:34 oleg
+oleg@rsync:~$
+```
+```
+oleg@rsync:~$ rsync -avc --exclude='.*' --delete . /tmp/backup
+sending incremental file list
+deleting oleg
+
+sent 130 bytes  received 21 bytes  302,00 bytes/sec
+total size is 0  speedup is 0,00
+oleg@rsync:~$ ls -al /tmp/backup
+итого 12
+drwx------ 3 oleg oleg 4096 янв 25 23:39 .
+drwxrwxrwt 9 root root 4096 янв 25 23:33 ..
+drwxr-xr-x 2 oleg oleg 4096 янв 25 23:23 netology
+oleg@rsync:~$
+```
