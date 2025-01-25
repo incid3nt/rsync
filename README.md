@@ -133,7 +133,39 @@ fi
 # m h  dom mon dow   command
 0 0 * * * /home/oleg/backup_home.sh
 ```
+```
+oleg@rsync:~$  ./backup_home.sh
+sending incremental file list
+oleg/
+oleg/backup_home.sh
+oleg/netology/
+oleg/netology/test
 
+sent 1.114 bytes  received 70 bytes  2.368,00 bytes/sec
+total size is 834  speedup is 0,70
+oleg@rsync:~$ ls -al /tmp/backup
+итого 44
+drwx------ 11 oleg oleg 4096 янв 26 00:25 .
+drwxrwxrwt  9 root root 4096 янв 26 00:18 ..
+drwxr-xr-x  3 oleg oleg 4096 янв 26 00:02 2025-01-26_00:02
+drwxr-xr-x  3 root root 4096 янв 26 00:03 2025-01-26_00:03
+drwxr-xr-x  3 root root 4096 янв 26 00:05 2025-01-26_00:05
+drwxr-xr-x  3 root root 4096 янв 26 00:09 2025-01-26_00:09
+drwxr-xr-x  3 root root 4096 янв 26 00:10 2025-01-26_00:10
+drwxr-xr-x  3 oleg oleg 4096 янв 26 00:19 2025-01-26_00:19
+drwxr-xr-x  3 oleg oleg 4096 янв 26 00:24 2025-01-26_00:24
+drwxr-xr-x  3 oleg oleg 4096 янв 26 00:25 2025-01-26_00:25
+drwxr-xr-x  2 oleg oleg 4096 янв 25 23:23 netology
+oleg@rsync:~$ tail -f /var/log/backup.log
+Backup completed successfully at Вс 26 янв 2025 00:02:27 MSK
+Backup completed successfully at Вс 26 янв 2025 00:03:36 MSK
+Backup completed successfully at Вс 26 янв 2025 00:05:52 MSK
+Бэкап выполнен успешно Вс 26 янв 2025 00:09:22 MSK
+Бэкап выполнен успешно, время бэкапа Вс 26 янв 2025 00:10:08 MSK
+Бэкап выполнен успешно, время бэкапа Вс 26 янв 2025 00:25:22 MSK
+^C
+oleg@rsync:~$
+```
 
 
 
